@@ -20,8 +20,12 @@ cask "termsurf" do
     system_command "codesign",
                    args: ["--force", "--deep", "--sign", "-",
                           "/Applications/TermSurf Wezboard.app"]
-    # Clear quarantine so Gatekeeper doesn't block the unsigned app
+    # Clear quarantine on everything — the tarball propagates the attribute
+    # to all extracted files, and Gatekeeper blocks unsigned binaries
     system_command "xattr", args: ["-cr", "/Applications/TermSurf Wezboard.app"]
+    system_command "xattr", args: ["-cr", "/opt/homebrew/opt/termsurf-roamium"]
+    system_command "xattr", args: ["-cr", staged_path/"web"]
+    system_command "xattr", args: ["-cr", staged_path/"wezboard"]
   end
 
   zap trash: [
