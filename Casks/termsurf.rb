@@ -20,6 +20,8 @@ cask "termsurf" do
     system_command "codesign",
                    args: ["--force", "--deep", "--sign", "-",
                           "/Applications/TermSurf Wezboard.app"]
+    # Clear quarantine so Gatekeeper doesn't block the unsigned app
+    system_command "xattr", args: ["-cr", "/Applications/TermSurf Wezboard.app"]
   end
 
   zap trash: [
