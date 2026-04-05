@@ -17,9 +17,11 @@ cask "termsurf" do
     system_command "codesign", args: ["--force", "--sign", "-", staged_path/"web"]
     system_command "codesign", args: ["--force", "--sign", "-", staged_path/"wezboard"]
     system_command "codesign", args: ["--force", "--sign", "-", "/opt/homebrew/opt/termsurf-roamium/roamium"]
+    # Sign the main binary inside the .app (not the bundle itself, which has
+    # unsealed dylibs in the root that cause codesign to fail on the bundle).
     system_command "codesign",
-                   args: ["--force", "--deep", "--sign", "-", "/Applications/TermSurf Wezboard.app"],
-                   print_stderr: false
+                   args: ["--force", "--sign", "-",
+                          "/Applications/TermSurf Wezboard.app/Contents/MacOS/wezboard-gui"]
   end
 
   zap trash: [
