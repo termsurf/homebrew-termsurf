@@ -1,6 +1,6 @@
 cask "termsurf" do
   version "0.1.0"
-  sha256 "536a9aa0c925985f2a95a5677c175dcf259062c0d8c8fafe202748de69b38088"
+  sha256 "6444a45a4ca81a091babf6e224de86f110c6f20f63a2d501db83928de0a2ed2f"
 
   url "https://github.com/termsurf/termsurf/releases/download/v#{version}/termsurf-#{version}-aarch64-apple-darwin.tar.gz"
   name "TermSurf"
@@ -17,11 +17,9 @@ cask "termsurf" do
     system_command "codesign", args: ["--force", "--sign", "-", staged_path/"web"]
     system_command "codesign", args: ["--force", "--sign", "-", staged_path/"wezboard"]
     system_command "codesign", args: ["--force", "--sign", "-", "/opt/homebrew/opt/termsurf-roamium/roamium"]
-    # Sign the main binary inside the .app (not the bundle itself, which has
-    # unsealed dylibs in the root that cause codesign to fail on the bundle).
     system_command "codesign",
-                   args: ["--force", "--sign", "-",
-                          "/Applications/TermSurf Wezboard.app/Contents/MacOS/wezboard-gui"]
+                   args: ["--force", "--deep", "--sign", "-",
+                          "/Applications/TermSurf Wezboard.app"]
   end
 
   zap trash: [
